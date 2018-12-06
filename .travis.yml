@@ -4,7 +4,7 @@ services:
   - docker
 
 before_install:
-  - docker buil -t emmanuelgarciads/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t emmanuelgarciads/react-test -f ./client/Dockerfile.dev ./client
 
 script:
   - docker run  emmanuelgarciads/react-test npm test -- --coverage
@@ -14,4 +14,15 @@ after_success:
   - docker build -t emmanuelgarciads/multi-nginx ./nginx
   - docker build -t emmanuelgarciads/multi-server ./server
   - docker build -t emmanuelgarciads/multi-worker ./worker
+
+  # Log in to the docjer CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images ands push them to docker hub
+  - docker push emmanuelgarciads/multi-client
+  - docker push emmanuelgarciads/multi-nginx
+  - docker push emmanuelgarciads/multi-server
+  - docker push emmanuelgarciads/multi-worker
+
+
+
 

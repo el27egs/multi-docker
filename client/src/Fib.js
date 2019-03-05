@@ -42,6 +42,11 @@ class Fib extends Component {
   }
 
   renderValues() {
+
+    if (typeof this.state.values !== "object"){
+      return [];
+    }
+
     const entries = [];
 
     for (let key in this.state.values) {
